@@ -13,6 +13,11 @@ void rectangle(int a, int b);
 
 void triangle(int a);
 
+void partieDeux();
+void partieTrois();
+void partieQuatre();
+
+
 //------========------//
 
 int strLen(const char* str){
@@ -25,7 +30,16 @@ int strLen(const char* str){
 }
 
 int main(){
-    //4x5 matrix
+    //partieDeux();
+    //partieTrois();
+    partieQuatre();
+    return 0;
+}
+
+void  partieDeux(){
+    /*
+     * Partie II -- Tableau et boucles
+     */
     float matrix[4][5] = {
             {1.0f, 2.0f, 3.0f, 4.0f, 5.0f},
             {-6.0f, 7.0f, 8.0f, -9.0f, 10.0f},
@@ -40,10 +54,58 @@ int main(){
     printf("Sum until first negative number: %f\n", sumUntilFirstNegative(matrix, rows, cols));
     char s[] = "lorem ipsum";
     printf("String spelled backwards is: %s\n", backwards(s));
+}
+
+void partieTrois(){
+    /*
+     * Partie III -- Appels système et affichage
+     */
     rectangle(3, 4);
     triangle(5);
-    return 0;
 }
+
+void partieQuatre() {
+    /*
+     * Partie IV -- Pointeurs
+     */
+    int a = 9;
+    int * pa = &a;
+    printf("a = %d\n", *pa);
+    *pa = 5;
+    printf("a = %d\n", *pa);
+
+    char s[] = {'u', 'n', ' ', 'p', 'o', 'i', 'n', 't','e', 'u', 'r', '\0'};
+    char * ps = s;
+    printf("Adresse de s : %p\n", ps);
+
+    // Calculate length of string via pointers
+    while (*ps++); // moves pointer until the end of the string
+    int len = ps - s - 1;
+    printf("Longueur de s : %d\n", len);
+
+    ps = s + 8;
+    *ps = '\0';
+    printf("s = %s\n", s);
+
+    // set pointer on 9th element of s
+
+    //TODO: make it work!
+    char * pN = s + 9;
+    char * res = (char *) malloc((strLen(ps) + strLen(pN) + 1) * sizeof(char));
+    char * pRes = res;
+    //concatenate s and pN
+    while (*ps != '\0'){
+        *pRes++ = *ps++;
+    }
+    while (*pN != '\0'){
+        *pRes++ = *pN++;
+    }
+    *pRes = '\0';
+    printf("s = %s\n", pRes);
+
+
+}
+
 
 float sum(float matrix[3][3], int rows, int cols) {
     /*
@@ -111,7 +173,7 @@ char* backwards(char s[]) {
 
 void rectangle(int a, int b){
     /*
-     * Draws a a x b rectangle using asterisks
+     * Draws an a x b rectangle using asterisks
      */
     int i, j;
     for (i = 0; i < a; i++) {
