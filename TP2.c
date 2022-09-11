@@ -75,7 +75,7 @@ void partieQuatre() {
     printf("a = %d\n", *pa);
 
     char s[] = {'u', 'n', ' ', 'p', 'o', 'i', 'n', 't','e', 'u', 'r', '\0'};
-    char * ps = s;
+    char *ps = &s;
     printf("Adresse de s : %p\n", ps);
 
     // Calculate length of string via pointers
@@ -83,25 +83,33 @@ void partieQuatre() {
     int len = ps - s - 1;
     printf("Longueur de s : %d\n", len);
 
-    ps = s + 8;
-    *ps = '\0';
+
+    ps -= len + 1;
+    *(ps + 8) = '\0';
     printf("s = %s\n", s);
 
-    // set pointer on 9th element of s
+    char * pN = (s+9); // pointeur sur le 9e élément de s
 
-    //TODO: make it work!
-    char * pN = s + 9;
+    /*
+     * On crée le pointeur de résultat de la bonne taille en mémoire,
+     * et un pointeur vers ce pointeur
+     * (on peut lui ajouter des éléments en s'affranchissant du calcul de sa taille pour affichage)
+     * puis on reconstitue le string s par parcours des deux parties ps et pN
+     * par simple concaténation.
+     */
     char * res = (char *) malloc((strLen(ps) + strLen(pN) + 1) * sizeof(char));
     char * pRes = res;
-    //concatenate s and pN
     while (*ps != '\0'){
-        *pRes++ = *ps++;
+        *pRes = *ps;
+        *ps++;
+        *pRes++;
     }
+    *pRes++ = 'e';
     while (*pN != '\0'){
         *pRes++ = *pN++;
     }
     *pRes = '\0';
-    printf("s = %s\n", pRes);
+    printf("res = %s\n", res);
 
 
 }
