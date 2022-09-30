@@ -143,7 +143,27 @@ struct list *select(struct list *l, int (*f)(double)){
     return selected;
 }
 
-
+struct list *collect(struct list *l, double (*f)(double)){
+    /* return a new list containing the result of applying f to each cell */
+    struct list *collected = create_list();
+    struct cell *c = l->first;
+    while (c != NULL){
+        struct cell *new_cell = malloc(sizeof(struct cell));
+        new_cell->value = f(c->value);
+        new_cell->next = NULL;
+        struct cell *c2 = collected->first;
+        if (c2 == NULL){
+            collected->first = new_cell;
+        } else {
+            while (c2->next != NULL){
+                c2 = c2->next;
+            }
+            c2->next = new_cell;
+        }
+        c = c->next;
+    }
+    return collected;
+}
 
 void print_list(struct list *l){
     struct cell *c = l->first;
@@ -167,6 +187,7 @@ int main() {
     print_list(&l);
     print_list(sort(&l));
     print_list(select(&l, supToTen));
+    print_list(collect(&l, square));
     printf("size: %d\n", size(&l));
     pop(&l);
     print_list(&l);
