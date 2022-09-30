@@ -9,6 +9,12 @@ struct list{
     struct cell* first;
 };
 
+struct file_pile{
+    struct cell* first;
+    struct file_pile (*add)(struct list, int);
+    struct file_pile (*remove)(struct list, int);
+};
+
 struct cell{
     double value;
     struct cell *next;
@@ -17,8 +23,80 @@ struct cell{
 struct list *create_list(){
     struct list *l = malloc(sizeof(struct list));
     l->first = NULL;
+    if ()
     return l;
 }
+
+struct file_pile *create_file_pile(int type){
+    /* create file or pile given the type wanted (0 for file, 1 for pile) */
+    struct file_pile *fp = malloc(sizeof(struct file_pile));
+    fp->first = NULL;
+    if (type){
+        fp->add = add_pile;
+        fp->remove = remove_pile;
+    } else{
+        fp->add = add_file;
+        fp->remove = remove_file;
+    }
+    return fp;
+}
+
+/*
+ * Functions for files and piles
+ */
+
+struct file_pile *add_file(struct file_pile *fp, double value) {
+    /* add a value to the end of the file */
+    struct cell *c = malloc(sizeof(struct cell));
+    c->value = value;
+    c->next = NULL;
+    if (fp->first == NULL) {
+        fp->first = c;
+    } else {
+        struct cell *current = fp->first;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = c;
+    }
+    return fp;
+}
+
+struct file_pile *remove_file(struct file_pile *fp) {
+    /* remove the first value of the file */
+    if (fp->first == NULL) {
+        printf("Error: file is empty");
+        exit(1);
+    } else {
+        struct cell *c = fp->first;
+        fp->first = c->next;
+        free(c);
+    }
+    return fp;
+}
+
+struct file_pile *add_pile(struct file_pile *fp, double value) {
+    /* add a value to the beginning of the pile */
+    struct cell *c = malloc(sizeof(struct cell));
+    c->value = value;
+    c->next = fp->first;
+    fp->first = c;
+    return fp;
+}
+
+struct file_pile *remove_pile(struct file_pile *fp) {
+    /* remove the first value of the pile */
+    if (fp->first == NULL) {
+        printf("Error: pile is empty");
+        exit(1);
+    } else {
+        struct cell *c = fp->first;
+        fp->first = c->next;
+        free(c);
+    }
+    return fp;
+}
+/*******/
 
 /*
  * Random functions to test select
